@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  var-cordinator-poc
+
+  Sample SAM Template for var-cordinator-poc
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 60
+
+Resources:
+  VarCordinatorLambdaFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: Var_Cordinator
+      CodeUri: var-cordinator-lambda/
+      Handler: lambda-function.lambda_handler
+      Runtime: python3.8
+      Events:
+        VarCordinator:
+          Type: SQS
+          Properties:
+            Queue: arn:aws:sqs:us-east-1:574597429707:a207957-var-release-coordinator-poc-queue
+            BatchSize: 10
+            Enabled: false
+
